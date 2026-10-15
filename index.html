@@ -1,0 +1,319 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON FORCE | 3D Fitness Club</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+:root{--lime:#c6ff00;--dark:#080b0b;--panel:#111717;--white:#f4f6ef}
+body{font-family:Arial,sans-serif;background:var(--dark);color:var(--white);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-weight:800;transition:.3s}
+nav{height:80px;padding:0 7%;display:flex;align-items:center;justify-content:space-between;background:#080b0bf0;position:fixed;top:0;width:100%;z-index:99;border-bottom:1px solid #293030}
+.logo{font-size:25px;font-weight:1000;letter-spacing:2px}
+.logo span{color:var(--lime)}
+.navlinks{display:flex;gap:27px;font-size:13px;text-transform:uppercase}
+.navlinks a:hover{color:var(--lime)}
+.menu{display:none;background:none;border:0;color:white;font-size:28px}
+.btn{display:inline-block;padding:15px 24px;background:var(--lime);color:#080b0b;border:2px solid var(--lime);font-size:12px;letter-spacing:1px}
+.btn:hover{background:transparent;color:var(--lime);transform:translateY(-3px)}
+.btn.outline{background:transparent;color:var(--white);border-color:#647070}
+.btn.outline:hover{border-color:var(--lime);color:var(--lime)}
+.hero{min-height:100vh;padding:150px 8% 90px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:30px;overflow:hidden;background:radial-gradient(ellipse at 75% 45%,#253327 0%,#101616 32%,#080b0b 70%)}
+.eyebrow{color:var(--lime);font-size:12px;letter-spacing:4px;font-weight:bold;margin-bottom:22px}
+h1{font-size:clamp(55px,8vw,110px);line-height:.88;letter-spacing:-5px;text-transform:uppercase}
+h1 span{color:var(--lime);display:block}
+.hero p,.section-intro{color:#a7b0ac;line-height:1.8;margin:27px 0;max-width:500px}
+.actions{display:flex;gap:13px;flex-wrap:wrap}
+.scene{height:480px;display:flex;align-items:center;justify-content:center;perspective:900px;position:relative}
+.orbit{position:absolute;width:380px;height:380px;border:1px solid #c6ff0035;border-radius:50%;transform:rotateX(68deg) rotateZ(-20deg);animation:spin 12s linear infinite}
+.orbit.two{width:310px;height:310px;border-color:#c6ff0060;animation-duration:8s;animation-direction:reverse}
+.orbit.three{width:450px;height:450px;border-style:dashed;animation-duration:24s}
+@keyframes spin{to{transform:rotateX(68deg) rotateZ(340deg)}}
+.cube{width:190px;height:190px;position:relative;transform-style:preserve-3d;animation:float 5s ease-in-out infinite,turn 15s linear infinite}
+.face{position:absolute;width:190px;height:190px;border:2px solid var(--lime);background:linear-gradient(135deg,#c6ff0030,#101616bb);box-shadow:inset 0 0 45px #c6ff0020,0 0 20px #c6ff0020}
+.front{transform:translateZ(95px)}.back{transform:rotateY(180deg) translateZ(95px)}
+.right{transform:rotateY(90deg) translateZ(95px)}.left{transform:rotateY(-90deg) translateZ(95px)}
+.top{transform:rotateX(90deg) translateZ(95px)}.bottom{transform:rotateX(-90deg) translateZ(95px)}
+.front:after{content:"NF";position:absolute;inset:0;display:grid;place-items:center;color:var(--lime);font-size:55px;font-weight:1000;letter-spacing:-4px}
+@keyframes turn{to{transform:rotateX(360deg) rotateY(360deg)}}
+@keyframes float{50%{translate:0 -20px}}
+.statbar{display:flex;gap:35px;margin-top:45px;flex-wrap:wrap}
+.stat strong{display:block;font-size:28px;color:var(--lime)}
+.stat small{font-size:10px;color:#a7b0ac;letter-spacing:1px}
+section{padding:100px 8%}
+.section-top{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:42px}
+h2{font-size:clamp(35px,5vw,62px);text-transform:uppercase;letter-spacing:-2px;line-height:1}
+h2 span{color:var(--lime)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--panel);border:1px solid #26302d;padding:30px;transition:.35s;position:relative;overflow:hidden}
+.card:hover{border-color:var(--lime);transform:translateY(-8px);box-shadow:0 20px 50px #0008}
+.card .number{font-size:12px;color:var(--lime);letter-spacing:2px}
+.card h3{font-size:24px;margin:20px 0 12px;text-transform:uppercase}
+.card p{font-size:14px;line-height:1.8;color:#9ba7a1}
+.card a{display:inline-block;margin-top:25px;color:var(--lime);font-size:12px;font-weight:bold}
+.program-visual{height:140px;margin:-30px -30px 25px;background:radial-gradient(circle at 70% 40%,#c6ff0050,transparent 35%),linear-gradient(135deg,#1d2821,#101414);display:grid;place-items:center;font-size:65px}
+.about{background:#0d1211}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.visual-panel{min-height:400px;display:grid;place-items:center;background:radial-gradient(circle,#263b22,#111717 65%);border:1px solid #374334;position:relative;perspective:700px}
+.plate{width:210px;height:210px;border:12px solid #c6ff00;border-radius:50%;display:grid;place-items:center;transform:rotateX(58deg) rotateZ(-25deg);box-shadow:0 0 50px #c6ff0030;animation:plate 8s linear infinite}
+.plate:before{content:"";position:absolute;width:140px;height:140px;border:8px solid #8ea93a;border-radius:50%}
+.plate:after{content:"NF";font-weight:1000;font-size:38px;color:var(--lime);transform:rotateZ(25deg) rotateX(-58deg)}
+@keyframes plate{to{transform:rotateX(58deg) rotateZ(335deg)}}
+.checks{margin:28px 0;display:grid;gap:15px;color:#c8d0cb}
+.checks span:before{content:"✦";color:var(--lime);margin-right:12px}
+.schedule{background:#0d1211}
+table{width:100%;border-collapse:collapse;margin-top:25px}
+th,td{text-align:left;padding:19px 15px;border-bottom:1px solid #28312e;font-size:13px}
+th{color:var(--lime);letter-spacing:1px;font-size:11px}
+td{color:#c4ccc6}tr:hover td{background:#c6ff0008}
+.price{font-size:42px;font-weight:900;margin:20px 0}.price small{font-size:12px;color:#9ba7a1}
+.card ul{list-style:none;margin:25px 0;display:grid;gap:13px;color:#aeb8b1;font-size:13px}
+.card li:before{content:"✓";color:var(--lime);margin-right:10px}
+.featured{border-color:var(--lime);background:linear-gradient(145deg,#1c2819,#111717)}
+.badge{position:absolute;right:0;top:0;background:var(--lime);color:#080b0b;padding:9px 13px;font-size:10px;font-weight:900}
+.trainer-icon{font-size:56px;color:var(--lime);margin:20px 0}
+.trainer-role{font-size:11px;color:var(--lime);letter-spacing:2px}
+.cta{padding:80px 8%;background:var(--lime);color:#080b0b;display:flex;align-items:center;justify-content:space-between;gap:30px}
+.cta h2{max-width:650px}
+.cta .btn{background:#080b0b;color:var(--lime);border-color:#080b0b}
+.contact-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px}
+form{display:grid;gap:15px}
+input,select,textarea{width:100%;padding:16px;background:#111717;border:1px solid #35403b;color:white;font:inherit;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--lime)}
+textarea{min-height:120px;resize:vertical}
+footer{padding:30px 8%;border-top:1px solid #26302d;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:#849089;font-size:12px}
+footer strong{color:var(--lime)}
+#notice{color:var(--lime);font-size:13px;line-height:1.7}
+@media(max-width:850px){
+ .navlinks{display:none;position:absolute;top:80px;left:0;width:100%;background:#0c1110;padding:25px;flex-direction:column;gap:22px}
+ .navlinks.open{display:flex}.menu{display:block}
+ .hero{grid-template-columns:1fr;padding-top:140px}.scene{height:350px}
+ .cards{grid-template-columns:1fr 1fr}.about-grid,.contact-grid{grid-template-columns:1fr;gap:35px}
+ .section-top{align-items:start;flex-direction:column}.cta{align-items:start;flex-direction:column}
+}
+@media(max-width:560px){
+ section{padding:70px 6%}.hero{padding-left:6%;padding-right:6%}
+ .cards{grid-template-columns:1fr}.scene{height:300px}
+ .cube{scale:.75}.orbit{scale:.8}.statbar{gap:22px}
+ h1{letter-spacing:-3px}th,td{padding:14px 7px;font-size:11px}
+}
+</style>
+</head>
+
+<body>
+<nav>
+  <a href="#home" class="logo">NEON<span>FORCE.</span></a>
+  <div class="navlinks" id="navlinks">
+    <a href="#home">Home</a><a href="#about">About</a>
+    <a href="#programs">Programs</a><a href="#schedule">Schedule</a>
+    <a href="#membership">Membership</a><a href="#contact">Contact</a>
+  </div>
+  <button class="menu" id="menu" aria-label="Toggle navigation">☰</button>
+</nav>
+
+<header class="hero" id="home">
+  <div>
+    <div class="eyebrow">THE NEXT LEVEL OF FITNESS</div>
+    <h1>BUILD YOUR <span>BEAST.</span></h1>
+    <p>Not just a gym. A new dimension of strength. Train harder, move smarter, and become the strongest version of yourself.</p>
+    <div class="actions">
+      <a class="btn" href="#membership">START YOUR JOURNEY ↗</a>
+      <a class="btn outline" href="#programs">EXPLORE PROGRAMS</a>
+    </div>
+    <div class="statbar">
+      <div class="stat"><strong>24/7</strong><small>TRAINING ACCESS*</small></div>
+      <div class="stat"><strong>15+</strong><small>EXPERT COACHES*</small></div>
+      <div class="stat"><strong>40+</strong><small>WEEKLY CLASSES*</small></div>
+    </div>
+  </div>
+  <div class="scene" aria-label="Animated 3D Neon Force logo">
+    <div class="orbit"></div><div class="orbit two"></div><div class="orbit three"></div>
+    <div class="cube">
+      <div class="face front"></div><div class="face back"></div>
+      <div class="face right"></div><div class="face left"></div>
+      <div class="face top"></div><div class="face bottom"></div>
+    </div>
+  </div>
+</header>
+
+<section id="about" class="about">
+  <div class="about-grid">
+    <div class="visual-panel"><div class="plate"></div></div>
+    <div>
+      <div class="eyebrow">ENGINEERED FOR RESULTS</div>
+      <h2>MORE THAN <span>MUSCLE.</span></h2>
+      <p class="section-intro">Your goals deserve more than ordinary training. Build strength, develop discipline, and train in an environment designed to push your limits.</p>
+      <div class="checks">
+        <span>Personalized training plans</span>
+        <span>Modern strength and cardio zones</span>
+        <span>Expert guidance for every level</span>
+        <span>Progress that keeps you motivated</span>
+      </div>
+      <a href="#contact" class="btn">MEET YOUR NEXT LEVEL ↗</a>
+    </div>
+  </div>
+</section>
+
+<section id="programs">
+  <div class="section-top">
+    <div><div class="eyebrow">FIND YOUR EDGE</div><h2>TRAIN WITH <span>PURPOSE.</span></h2></div>
+    <p class="section-intro">Choose your challenge. Make every rep count.</p>
+  </div>
+  <div class="cards">
+    <article class="card"><div class="program-visual">🏋️</div><div class="number">01 / STRENGTH</div><h3>Power Lifting</h3><p>Build raw strength with structured resistance training and technique-focused sessions.</p><a href="#contact" class="choose" data-program="Power Lifting">CHOOSE PROGRAM ↗</a></article>
+    <article class="card"><div class="program-visual">⚡</div><div class="number">02 / PERFORMANCE</div><h3>HIIT & Cardio</h3><p>Challenge your stamina with high-energy intervals and conditioning workouts.</p><a href="#contact" class="choose" data-program="HIIT & Cardio">CHOOSE PROGRAM ↗</a></article>
+    <article class="card"><div class="program-visual">🧘</div><div class="number">03 / MOBILITY</div><h3>Yoga & Recovery</h3><p>Improve mobility, balance, breathing, and recovery with guided movement.</p><a href="#contact" class="choose" data-program="Yoga & Recovery">CHOOSE PROGRAM ↗</a></article>
+  </div>
+</section>
+
+<section id="schedule" class="schedule">
+  <div class="eyebrow">PLAN YOUR WEEK</div>
+  <h2>THE TRAINING <span>GRID.</span></h2>
+  <p class="section-intro">Sample weekly class timetable. Confirm actual class times with the gym.</p>
+  <table>
+    <thead><tr><th>DAY</th><th>MORNING</th><th>AFTERNOON</th><th>EVENING</th></tr></thead>
+    <tbody>
+      <tr><td>MONDAY</td><td>Strength</td><td>Open Gym</td><td>HIIT</td></tr>
+      <tr><td>TUESDAY</td><td>Cardio</td><td>Mobility</td><td>Power Lifting</td></tr>
+      <tr><td>WEDNESDAY</td><td>Strength</td><td>Open Gym</td><td>Yoga</td></tr>
+      <tr><td>THURSDAY</td><td>HIIT</td><td>Mobility</td><td>Strength</td></tr>
+      <tr><td>FRIDAY</td><td>Cardio</td><td>Open Gym</td><td>Full Body</td></tr>
+      <tr><td>WEEKEND</td><td>Functional</td><td>Recovery</td><td>Open Gym</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:11px;color:#8c9991;margin-top:15px">*Demo timetable; replace with your gym's actual schedule.</p>
+</section>
+
+<section id="membership">
+  <div class="section-top">
+    <div><div class="eyebrow">INVEST IN YOURSELF</div><h2>CHOOSE YOUR <span>LEVEL.</span></h2></div>
+    <p class="section-intro">Simple membership options. Select a plan to enquire.</p>
+  </div>
+  <div class="cards">
+    <article class="card">
+      <div class="number">01 / STARTER</div><h3>Essential</h3>
+      <div class="price">$29<small> / month</small></div>
+      <p>For building a consistent routine.</p>
+      <ul><li>Gym floor access</li><li>Strength equipment</li><li>Locker access</li><li>Basic fitness assessment</li></ul>
+      <button class="btn outline plan" data-plan="Essential">SELECT ESSENTIAL</button>
+    </article>
+    <article class="card featured">
+      <div class="badge">MOST POPULAR</div><div class="number">02 / PERFORMANCE</div><h3>Pro Athlete</h3>
+      <div class="price">$59<small> / month</small></div>
+      <p>For the serious everyday athlete.</p>
+      <ul><li>All Essential benefits</li><li>Group fitness classes</li><li>Monthly progress review</li><li>Training plan guidance</li></ul>
+      <button class="btn plan" data-plan="Pro Athlete">SELECT PRO</button>
+    </article>
+    <article class="card">
+      <div class="number">03 / ELITE</div><h3>Limitless</h3>
+      <div class="price">$99<small> / month</small></div>
+      <p>For a more personalized experience.</p>
+      <ul><li>All Pro benefits</li><li>Personal training consultation</li><li>Priority class booking</li><li>Individual goal review</li></ul>
+      <button class="btn outline plan" data-plan="Limitless">SELECT LIMITLESS</button>
+    </article>
+  </div>
+  <p style="font-size:11px;color:#89968f;margin-top:20px">*Example prices for the template. Replace with your actual rates and currency.</p>
+</section>
+
+<div class="cta">
+  <div><div class="eyebrow" style="color:#263400">YOUR FUTURE STARTS NOW</div><h2>STOP WAITING.<br>START <span>TRANSFORMING.</span></h2></div>
+  <a href="#contact" class="btn">GET STARTED TODAY ↗</a>
+</div>
+
+<section id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="eyebrow">LET'S GET YOU MOVING</div>
+      <h2>MAKE YOUR <span>MOVE.</span></h2>
+      <p class="section-intro">Tell us what you want to achieve. Send an enquiry to get started with a suitable program or membership.</p>
+      <p style="color:#c6ff00;margin:20px 0 10px">✦ TRAINING. DISCIPLINE. RESULTS.</p>
+      <p style="color:#89968f;font-size:13px;line-height:1.8">Demo website template. Add your real gym address, phone number, social links, and email before publishing.</p>
+    </div>
+    <form id="contactForm">
+      <input id="name" name="name" placeholder="Your full name" required>
+      <input id="email" name="email" type="email" placeholder="Your email address" required>
+      <select id="planSelect" name="plan" required>
+        <option value="">Choose a membership plan</option>
+        <option>Essential</option><option>Pro Athlete</option><option>Limitless</option>
+      </select>
+      <select id="programSelect" name="program">
+        <option value="">Choose a training program (optional)</option>
+        <option>Power Lifting</option><option>HIIT & Cardio</option><option>Yoga & Recovery</option>
+      </select>
+      <textarea id="message" name="message" placeholder="Your goals or questions"></textarea>
+      <button type="submit" class="btn">PREPARE MY ENQUIRY ↗</button>
+      <p id="notice" role="status"></p>
+      <p style="font-size:11px;color:#89968f">This demo opens your email app. Configure the email address in the JavaScript before using it live.</p>
+    </form>
+  </div>
+</section>
+
+<footer><div class="logo">NEON<span>FORCE.</span></div><div>BUILT DIFFERENT. TRAIN DIFFERENT.</div><div>© 2026 NEON FORCE · DEMO TEMPLATE</div></footer>
+
+<script>
+const menu = document.getElementById('menu');
+const navlinks = document.getElementById('navlinks');
+
+menu.addEventListener('click', () => navlinks.classList.toggle('open'));
+navlinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => navlinks.classList.remove('open'));
+});
+
+document.querySelectorAll('.plan').forEach(button => {
+  button.addEventListener('click', () => {
+    document.getElementById('planSelect').value = button.dataset.plan;
+    document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+    document.getElementById('name').focus({preventScroll:true});
+    document.getElementById('notice').textContent =
+      button.dataset.plan + ' selected. Fill in your details below.';
+  });
+});
+
+document.querySelectorAll('.choose').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('programSelect').value = link.dataset.program;
+  });
+});
+
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const plan = document.getElementById('planSelect').value;
+  const program = document.getElementById('programSelect').value || 'Not specified';
+  const message = document.getElementById('message').value.trim();
+
+  if (!name || !email || !plan) {
+    document.getElementById('notice').textContent =
+      'Please enter your name, email and membership plan.';
+    return;
+  }
+
+  // IMPORTANT: Replace with your real gym email address.
+  const gymEmail = 'YOUR_EMAIL@example.com';
+  const subject = encodeURIComponent('New NEON FORCE Gym Enquiry');
+  const body = encodeURIComponent(
+    'Name: ' + name + '\\nEmail: ' + email +
+    '\\nMembership: ' + plan + '\\nProgram: ' + program +
+    '\\nMessage: ' + message
+  );
+
+  if (gymEmail === 'YOUR_EMAIL@example.com') {
+    document.getElementById('notice').textContent =
+      'Form validated! Replace YOUR_EMAIL@example.com in the code to enable email enquiries.';
+    return;
+  }
+
+  document.getElementById('notice').textContent =
+    'Opening your email app to send the enquiry…';
+  window.location.href = 'mailto:' + gymEmail +
+    '?subject=' + subject + '&body=' + body;
+});
+</script>
+</body>
+</html>
+```
